@@ -87,12 +87,13 @@ window.addEventListener("DOMContentLoaded", () => {
     document.body.style.overflow = "";
   };
 
-  modalTrigger.forEach((btn) =>
-    btn.addEventListener("click", () => {
-      modal.style.display = "block";
-      document.body.style.overflow = "hidden";
-    }),
-  );
+  const openModel = () => {
+    modal.style.display = "block";
+    document.body.style.overflow = "hidden";
+    clearInterval(openModel);
+  };
+
+  modalTrigger.forEach((btn) => btn.addEventListener("click", openModel));
 
   modalClose.addEventListener("click", closeModal);
 
@@ -107,4 +108,18 @@ window.addEventListener("DOMContentLoaded", () => {
       closeModal();
     }
   });
+
+  const modelTimer = setTimeout(openModel, 3000);
+
+  const showModelByScroll = () => {
+    if (
+      window.pageYOffset + document.documentElement.clientHeight >=
+      document.documentElement.scrollHeight - 1
+    ) {
+      openModel();
+      window.removeEventListener("scroll", showModelByScroll);
+    }
+  };
+
+  window.addEventListener("scroll", showModelByScroll);
 });
