@@ -120,41 +120,7 @@ window.addEventListener("DOMContentLoaded", () => {
 
   window.addEventListener("scroll", showModelByScroll);
 
-  // USED CLASS FOR CARDS
-
-  // class MenuCard {
-  //   constructor(src, alt, title, descr, price, parentSelector) {
-  //     this.src = src;
-  //     this.alt = alt;
-  //     this.title = title;
-  //     this.descr = descr;
-  //     this.price = price;
-  //     this.parent = document.querySelector(parentSelector);
-  //     this.transfer = 450;
-  //     this.changeToUAH();
-  //   }
-
-  //   changeToUAH() {
-  //     this.price = this.price * this.transfer;
-  //   }
-
-  //   render() {
-  //     const element = document.createElement("div");
-  //     element.innerHTML = `
-  //       <div class="menu__item">
-  //         <img src=${this.src} alt=${this.alt} />
-  //         <h3 class="menu__item-subtitle">${this.title}</h3>
-  //         <div class="menu__item-descr">${this.descr}</div>
-  //         <div class="menu__item-divider"></div>
-  //         <div class="menu__item-price">
-  //           <div class="menu__item-cost">Цена:</div>
-  //           <div class="menu__item-total"><span>${this.price}</span>ТЕНГЕ/день</div>
-  //         </div>
-  //       </div>
-  //     `;
-  //     this.parent.append(element);
-  //   }
-  // }
+  // fetch response in card
 
   const getResource = async (url) => {
     const res = await fetch(url);
@@ -165,19 +131,6 @@ window.addEventListener("DOMContentLoaded", () => {
 
     return await res.json();
   };
-
-  // getResource("http://localhost:3000/menu").then((data) => {
-  //   data.forEach(({ img, altimg, title, descr, price }) => {
-  //     new MenuCard(
-  //       img,
-  //       altimg,
-  //       title,
-  //       descr,
-  //       price,
-  //       ".menu .container",
-  //     ).render();
-  //   });
-  // });
 
   const createCard = (data) => {
     data.forEach(({ img, altimg, title, descr, price }) => {
@@ -280,4 +233,36 @@ window.addEventListener("DOMContentLoaded", () => {
   forms.forEach((item) => {
     bindPostData(item);
   });
+
+  // Slider
+
+  const slides = document.querySelectorAll(".offer__slide"),
+    prev = document.querySelector(".offer__slider-prev"),
+    next = document.querySelector(".offer__slider-next"),
+    current = document.querySelector("#current"),
+    total = document.querySelector("#total");
+
+  let slideIndex = 1;
+
+  total.textContent = slides.length < 10 ? `0${slides.length}` : slides.length;
+
+  const showSlides = (num) => {
+    if (num > slides.length) slideIndex = 1;
+
+    if (num < 1) slideIndex = slides.length;
+
+    slides.forEach((item) => (item.style.display = "none"));
+
+    current.textContent = slideIndex < 10 ? `0${slideIndex}` : slideIndex;
+
+    slides[slideIndex - 1].style.display = "block";
+  };
+
+  const plusSlider = (num) => showSlides((slideIndex += num));
+
+  prev.addEventListener("click", () => plusSlider(-1));
+
+  next.addEventListener("click", () => plusSlider(1));
+
+  showSlides(slideIndex);
 });
