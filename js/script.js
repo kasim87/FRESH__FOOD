@@ -269,19 +269,20 @@ window.addEventListener("DOMContentLoaded", () => {
 
   const indicators = document.createElement("ol"),
     dots = [];
+
   indicators.classList.add("carousel-indicators");
   indicators.style.cssText = `
-    position: absolute;
-    right: 0;
-    bottom: 0;
-    left: 0;
-    z-index: 15;
-    display: flex;
-    justify-content: center;
-    margin-right: 15%;
-    margin-left: 15%;
-    list-style: none;
-    `;
+      position: absolute;
+      right: 0;
+      bottom: 0;
+      left: 0;
+      z-index: 15;
+      display: flex;
+      justify-content: center;
+      margin-right: 15%;
+      margin-left: 15%;
+      list-style: none;
+      `;
 
   slider.append(indicators);
 
@@ -308,7 +309,7 @@ window.addEventListener("DOMContentLoaded", () => {
   }
 
   dots.forEach((dot, index) => {
-    dot.addEventListener("click", (e) => {
+    dot.addEventListener("click", () => {
       slideIndex = index + 1;
 
       showSlides();
@@ -320,4 +321,84 @@ window.addEventListener("DOMContentLoaded", () => {
   next.addEventListener("click", () => plusSlider(1));
 
   showSlides(slideIndex);
+
+  // Calc
+
+  const female = document.querySelector("#female"),
+    male = document.querySelector("#male"),
+    result = document.querySelector(".calculating__result span");
+
+  let sex = "female",
+    height,
+    weight,
+    age,
+    ratio = 1.375;
+
+  const calcTotal = () => {
+    if ((!sex, !height, !weight, !ratio, !age)) {
+      result.textContent = "_______";
+      return;
+    }
+
+    if (sex === "female") {
+      result.textContent = Math.round(
+        (447.6 + 9.2 * weight + 3.1 * height - 4.3 * age) * ratio,
+      );
+    } else {
+      result.textContent = Math.round(
+        (88.36 + 13.4 * weight + 4.5 * height - 5.7 * age) * ratio,
+      );
+    }
+  };
+
+  calcTotal();
+
+  const getStaticInfo = (parentSelector, activeClass) => {
+    const elements = document.querySelectorAll(`${parentSelector} div`);
+
+    elements.forEach((elem) => {
+      elem.addEventListener("click", (e) => {
+        if (e.target.getAttribute("data-ratio")) {
+          ratio = +e.target.getAttribute("data-ratio");
+        } else {
+          sex = e.target.getAttribute("id");
+        }
+
+        elements.forEach((elem) => {
+          elem.classList.remove(activeClass);
+        });
+
+        e.target.classList.add(activeClass);
+
+        calcTotal();
+      });
+    });
+  };
+
+  getStaticInfo("#gender", "calculating__choose-item_active");
+  getStaticInfo(".calculating__choose_big", "calculating__choose-item_active");
+
+  const getDynamicInfo = (selector) => {
+    const input = document.querySelector(selector);
+
+    input.addEventListener("input", () => {
+      switch (input.getAttribute("id")) {
+        case "height":
+          height = +input.value;
+          break;
+        case "weight":
+          weight = +input.value;
+          break;
+        case "age":
+          age = +input.value;
+          break;
+      }
+
+      calcTotal();
+    });
+  };
+
+  getDynamicInfo("#height");
+  getDynamicInfo("#weight");
+  getDynamicInfo("#age");
 });
