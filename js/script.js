@@ -364,9 +364,7 @@ window.addEventListener("DOMContentLoaded", () => {
           sex = e.target.getAttribute("id");
         }
 
-        elements.forEach((elem) => {
-          elem.classList.remove(activeClass);
-        });
+        elements.forEach((elem) => elem.classList.remove(activeClass));
 
         e.target.classList.add(activeClass);
 
@@ -382,6 +380,12 @@ window.addEventListener("DOMContentLoaded", () => {
     const input = document.querySelector(selector);
 
     input.addEventListener("input", () => {
+      if (input.value.match(/\D/)) {
+        input.style.border = "2px solid red";
+      } else {
+        input.style.border = "none";
+      }
+
       switch (input.getAttribute("id")) {
         case "height":
           height = +input.value;
