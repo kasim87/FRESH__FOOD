@@ -1,6 +1,4 @@
-export default function timer() {
-  const deadline = "2026-06-29";
-
+export default function timer(deadline) {
   const getTimeRemain = (endTime) => {
     let days, hours, minutes, seconds;
     const t = Date.parse(endTime) - Date.parse(new Date());

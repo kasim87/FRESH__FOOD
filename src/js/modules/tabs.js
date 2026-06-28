@@ -1,6 +1,10 @@
-export default function tabs() {
-  const tabs = document.querySelectorAll(".tabheader__item"),
-    tabsContent = document.querySelectorAll(".tabcontent");
+export default function tabs(
+  tabsSelector,
+  tabsContentSelector,
+  activeSelector,
+) {
+  const tabs = document.querySelectorAll(tabsSelector),
+    tabsContent = document.querySelectorAll(tabsContentSelector);
 
   const showHideTabsContent = (indexNum = 0) => {
     tabsContent.forEach(
@@ -9,8 +13,8 @@ export default function tabs() {
 
     tabs.forEach((item, i) =>
       i === indexNum
-        ? item.classList.add("tabheader__item_active")
-        : item.classList.remove("tabheader__item_active"),
+        ? item.classList.add(activeSelector)
+        : item.classList.remove(activeSelector),
     );
   };
 

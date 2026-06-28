@@ -1,5 +1,8 @@
-export default function form() {
-  const forms = document.querySelectorAll("form");
+import { closeModal, openModel } from "./modal";
+import { postData } from "../services/service";
+
+export default function form(formSelector, modalTimerId) {
+  const forms = document.querySelectorAll(formSelector);
 
   const message = {
     loading: "img/form/spinner.svg",
@@ -7,24 +10,12 @@ export default function form() {
     failure: "Что-то пошло не так...",
   };
 
-  const postData = async (url, data) => {
-    const res = await fetch(url, {
-      method: "POST",
-      headers: {
-        "Content-type": "application/json",
-      },
-      body: data,
-    });
-
-    return await res.json();
-  };
-
   const showThanksModal = (message) => {
     const prevModalDialog = document.querySelector(".modal__dialog");
 
     prevModalDialog.classList.add("hide");
 
-    openModel();
+    openModel(".modal", modalTimerId);
 
     const thanksModal = document.createElement("div");
     thanksModal.classList.add("modal__dialog");
@@ -41,7 +32,7 @@ export default function form() {
       thanksModal.remove();
       prevModalDialog.classList.add("show");
       prevModalDialog.classList.remove("hide");
-      closeModal();
+      closeModal(".modal");
     }, 10000);
   };
 

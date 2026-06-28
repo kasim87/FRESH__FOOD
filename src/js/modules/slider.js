@@ -1,10 +1,17 @@
-export default function slider() {
-  const slides = document.querySelectorAll(".offer__slide"),
-    slider = document.querySelector(".offer__slider"),
-    prev = document.querySelector(".offer__slider-prev"),
-    next = document.querySelector(".offer__slider-next"),
-    current = document.querySelector("#current"),
-    total = document.querySelector("#total");
+export default function slider({
+  container,
+  slide,
+  nextArrow,
+  prevArrow,
+  totalCounter,
+  currentCounter,
+}) {
+  const slides = document.querySelectorAll(slide),
+    slider = document.querySelector(container),
+    prev = document.querySelector(prevArrow),
+    next = document.querySelector(nextArrow),
+    current = document.querySelector(currentCounter),
+    total = document.querySelector(totalCounter);
 
   let slideIndex = 1;
 
